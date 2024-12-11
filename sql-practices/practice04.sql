@@ -2,7 +2,7 @@
 
 -- 문제1.
 -- 현재 전체 사원의 평균 급여보다 많은 급여를 받는 사원은 몇 명이나 있습니까?
-    SELECT 
+SELECT 
     COUNT(*)
 FROM
     salaries
@@ -78,7 +78,7 @@ WHERE
 SELECT 
     a.emp_no,
     CONCAT(a.first_name, ' ', a.last_name) as name,
-    CONCAT(d.first_name, ' ', d.last_name) as manage_name,
+    CONCAT(d.first_name, ' ', d.last_name) as manager_name,
     e.dept_name
 FROM
     employees a,
