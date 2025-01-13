@@ -52,15 +52,32 @@ public class BookDao {
 	public int update(Long id, String status) {
 		int count = 0;
 		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update book set status = ? where id = ?");
-		) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			
+			pstmt = conn.prepareStatement("update book set status = ? where id = ?");
 			pstmt.setString(1, status);
 			pstmt.setLong(2, id);
 			count = pstmt.executeUpdate();
+
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
+			try {
+				conn.rollback();
+			} catch(SQLException ignore) {
+			}
+		} finally {
+			try {
+				conn.commit();
+				pstmt.close();
+				conn.close();
+			} catch (SQLException ignore) {
+			}
+			
 		}
 		
 		return count;				
